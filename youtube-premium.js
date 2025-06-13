@@ -1,35 +1,40 @@
-/**
- * YouTube Ad Block + Background + PiP (Stable)
- * Author: Giang Coder
- */
-
-let body = $response.body;
+/***********************************************
+> YouTube Premium Unlock by Giang Coder
+- Chặn quảng cáo
+- Cho phép phát nền
+- Bật PiP
+- Hiệu lực lâu dài
+***********************************************/
 
 try {
-    const obj = JSON.parse(body);
+    let obj = JSON.parse($response.body);
 
-    // 1. Chặn quảng cáo (an toàn)
+    // Xóa quảng cáo
     delete obj.adPlacements;
     delete obj.playerAds;
-    if (obj.responseContext?.adSlots) {
-        delete obj.responseContext.adSlots;
-    }
-
-    // 2. Xoá tracking
+    if (obj.responseContext?.adSlots) delete obj.responseContext.adSlots;
     delete obj.playbackTracking;
 
-    // 3. Bật phát nền và PiP (premium giả lập)
+    // Giả lập Premium (chèn entitlement nếu app có check)
+    obj.entitlements = {
+        premium: {
+            product_identifier: "com.youtube.premium.yearly",
+            purchase_date: "2024-01-01T00:00:00Z",
+            expires_date: "2099-12-31T23:59:59Z"
+        }
+    };
+
+    // Cho phép phát nền
     if (obj.playabilityStatus?.status === "OK") {
         obj.playerConfig = obj.playerConfig || {};
         obj.playerConfig.backgroundPlayback = true;
     }
 
-    // ⚠ KHÔNG đụng vào streamingData để tránh lỗi
-    // (YouTube sẽ không giải được video nếu signatureCipher sai)
+    // Thêm chú thích thương hiệu
+    obj.Attention = "✔ Mở khoá YouTube Premium – by Giang Coder";
 
-    body = JSON.stringify(obj);
+    $done({ body: JSON.stringify(obj) });
 } catch (e) {
-    console.log("YouTube patch error:", e);
+    console.log("YouTube_GiangCoder Script Error:", e);
+    $done({});
 }
-
-$done({ body });
