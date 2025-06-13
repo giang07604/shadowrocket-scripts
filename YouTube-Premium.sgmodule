@@ -1,28 +1,13 @@
-[General]
-skip-proxy = DNS
-bypass-system = true
-bypass-tun = false
-udp-relay = false
-
-[Policy]
-Direct = direct
-Proxy = proxy
-
-[Proxy]
-Proxy = http, 127.0.0.1, 6152
-
-[Rule]
-DOMAIN-SUFFIX,youtube.com,Proxy
-DOMAIN-SUFFIX,googlevideo.com,Proxy
-DOMAIN-SUFFIX,youtubei.googleapis.com,Proxy
-FINAL,Direct
-
-[MITM]
-enabled = true
-hostname = *.youtube.com, *.googlevideo.com, youtubei.googleapis.com
+#!url=https://raw.githubusercontent.com/giang07604/shadowrocket-scripts/main/modules/YouTube_GiangCoder.sgmodule
+#!name=YouTube-Premium_GiangCoder
+#!desc=Unlock Premium, Background, PiP - By Giang Coder
 
 [Script]
-http-response ^https:\/\/(www\.youtube\.com|youtubei\.googleapis\.com)\/(v1\/player|player|get_video_info) script-path=https://raw.githubusercontent.com/giang07604/shadowrocket-scripts/main/youtube-premium.js, requires-body=true, max-size=0
+# ~ YouTube Premium Unlock by Giang Coder ~
+youtube-premium = type=http-response, pattern=^https:\/\/(www\.youtube\.com|youtubei\.googleapis\.com)\/(v1\/player|player|get_video_info), requires-body=true, max-size=0, script-path=https://raw.githubusercontent.com/giang07604/shadowrocket-scripts/main/js/YouTube_GiangCoder.js, timeout=60
 
-[Module]
-https://raw.githubusercontent.com/giang07604/shadowrocket-scripts/main/YouTube-Premium.sgmodule
+[URL Rewrite]
+^https?:\/\/(www\.)?googlevideo\.com\/.*(&|\?)oad=.*$ reject
+
+[MITM]
+hostname = %APPEND% *.youtube.com, *.googlevideo.com, youtubei.googleapis.com
