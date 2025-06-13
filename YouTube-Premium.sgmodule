@@ -1,0 +1,14 @@
+[Module]
+tag = "⭐️ YouTube Premium Unlock"
+description = "Chặn quảng cáo, phát nền, bật PiP cho YouTube"
+version = "1.0"
+author = "Giang Coder"
+
+[Script]
+http-response ^https:\/\/(www\.youtube\.com|youtubei\.googleapis\.com)\/(v1\/player|player|get_video_info) script-path=https://raw.githubusercontent.com/giang07604/shadowrocket-scripts/main/youtube-premium.js, requires-body=true, max-size=0
+
+[URL Rewrite]
+^https?:\/\/(www\.)?googlevideo\.com\/.*(&|\?)oad=.*$ reject
+
+[MITM]
+hostname = *.youtube.com, *.googlevideo.com, youtubei.googleapis.com
